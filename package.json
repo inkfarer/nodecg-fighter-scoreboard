@@ -1,0 +1,43 @@
+{
+  "name": "figher-scoreboard",
+  "version": "0.0.0",
+  "description": "A graphics package primarily designed around the fighting game Tekken",
+  "homepage": "",
+  "author": {
+    "name": "randomoink",
+    "email": "yksaste@gmail.com",
+    "url": ""
+  },
+  "files": [
+    "dashboard",
+    "graphics",
+    "extension.js",
+    "extension"
+  ],
+  "keywords": [
+    "",
+    "nodecg-bundle"
+  ],
+  "nodecg": {
+    "compatibleRange": ">=0.9",
+    "dashboardPanels": [
+      {
+        "name": "scoreboard",
+        "title": "Scoreboard",
+        "width": 2,
+        "file": "scoreboard.html",
+        "headerColor": "#00BEBE",
+		"workspace": "Controls"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "main.html",
+        "width": 1920,
+        "height": 1080
+      }
+    ]
+  },
+  "repository": "https://github.com/nodecg/nodecg.git",
+  "license": "MIT"
+}
