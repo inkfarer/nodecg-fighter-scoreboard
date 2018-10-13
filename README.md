@@ -16,4 +16,4 @@ A [NodeCG](http://github.com/nodecg/nodecg) bundle, made primarily with the figh
 
 Start NodeCG. By default, the dashboard can be accessed from `http://localhost:9090`.
 
-After confirming that NodeCG is running, you can access the graphics from `http://localhost:9090/bundles/nodecg-fighter-scoreboard/graphics/main.html`. The graphic runs at a resolution of 1920x1080.
+After confirming that NodeCG is running, you can access the graphics from `http://localhost:9090/bundles/nodecg-fighter-scoreboard/graphics/main.html`. The graphic runs at a resolution of 1920x1080 and can be added as a browser source to broadcast applications like OBS Studio.
