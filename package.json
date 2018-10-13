@@ -1,5 +1,5 @@
 {
-  "name": "figher-scoreboard",
+  "name": "nodecg-fighter-scoreboard",
   "version": "0.0.0",
   "description": "A graphics package primarily designed around the fighting game Tekken",
   "homepage": "",
@@ -27,7 +27,7 @@
         "width": 2,
         "file": "scoreboard.html",
         "headerColor": "#00BEBE",
-		"workspace": "Controls"
+        "workspace": "Controls"
       }
     ],
     "graphics": [
