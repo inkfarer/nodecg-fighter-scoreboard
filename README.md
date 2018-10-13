@@ -10,7 +10,7 @@ A [NodeCG](http://github.com/nodecg/nodecg) bundle, made primarily with the figh
 ## Install
 
 1. Install NodeCG
-2. Clone nodecg-figher-scoreboard to `nodecg/bundles/nodecg-fighter-scoreboard` or, if you have [NodeCG-cli](https://github.com/nodecg/nodecg-cli) installed, run `nodecg install randomoink/nodecg-fighter-scoreboard` in NodeCG's install directory. Please let me know if this doesn't work!
+2. Clone nodecg-fighter-scoreboard to `nodecg/bundles/nodecg-fighter-scoreboard` or, if you have [NodeCG-cli](https://github.com/nodecg/nodecg-cli) installed, run `nodecg install randomoink/nodecg-fighter-scoreboard` in NodeCG's install directory. Please let me know if this doesn't work!
 
 ## Usage
 
