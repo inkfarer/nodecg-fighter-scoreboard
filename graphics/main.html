@@ -1,9 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link href="https://fonts.googleapis.com/css?family=Lato:900" rel="stylesheet">
     <meta charset="UTF-8">
+	<style>
+		#p1scored {
+			color: #FFFFFF;
+			position: absolute;
+			left: 10px;
+			font-size: 3em;
+			font-family: 'Lato', sans-serif;
+			top: -2px;
+		}
+		#p2scored {
+			color: #FFFFFF;
+			position: absolute;
+			font-size: 3em;
+			font-family: 'Lato', sans-serif;
+			top: -2px;
+			right: 10px;
+		}
+		#staged {
+			color: #FFFFFF;
+			position: absolute;
+			font-size: 1.5em;
+			text-align: center;
+			width: 250px;
+			font-family: 'Lato', sans-serif;
+			top: 2px;
+		}
+		#p1named {
+			color: #000000;
+			right: 5px;
+			font-size: 3em;
+			position: absolute;
+			font-family: 'Lato', sans-serif;
+		}
+		#p2named {
+			color: #FFFFFF;
+			position: absolute;
+			font-size: 3em;
+			font-family: 'Lato', sans-serif;
+		}
+		#p1graphic {
+			position: absolute;
+			background-color: #86F891;
+			width: 300px;
+			height: 50px;
+			top: -1px;
+		}
+		#p1graphics {
+			top: 20px;
+			left: 450px;
+			position: absolute;
+		}
+		#p1scoreg {
+			position: absolute;
+			background-color: #2D2D2D;
+			height: 50px;
+			width: 50px;
+			left: 305px;
+		}
+		#p2graphics {
+			top: 20px;
+			right: 750px;
+			position: absolute;
+		}
+		#p2named {
+			color: #000000;
+			left: 5px;
+			font-size: 3em;
+			position: absolute;
+			font-family: 'Lato', sans-serif;
+		}
+		#p2scoreg {
+			position: absolute;
+			background-color: #2D2D2D;
+			height: 50px;
+			width: 50px;
+			right: 5px;
+		}
+		#p2nameg {
+			position: absolute;
+			background-color: #86F891;
+			width: 300px;
+			height: 50px;
+			top: -1px;
+		}
+		#stageg {
+			position: absolute;
+			top: 25px;
+			right: 835px;
+			background-color: #0075D0;
+			width: 250px;
+			height: 35px;
+		}
+		#p1namegr {
+			background-image: linear-gradient(to right, rgba(255, 255, 255, 0), #86F891);
+			width: 200px;
+			height: 50px;
+			position: absolute;
+			right: 300px;
+			
+		}
+		#p2namegr {
+			background-image: linear-gradient(to left, rgba(255, 255, 255, 0), #86F891);
+			width: 200px;
+			height: 50px;
+			position: absolute;
+			left: 300px;
+			
+		}
+	</style>
 </head>
 <body>
-
+	<div id="p1graphics">
+		<div id="p1scoreg">
+			<div id="p1scored"></div>
+		</div>
+		<div id="p1graphic">
+			<div id="p1named"></div>
+			<div id="p1namegr"></div>
+		</div>
+	</div>
+	<div id="p2graphics">
+		<div id="p2scoreg">
+			<div id="p2scored"></div>
+		</div>
+		<div id="p2nameg">
+			<div id="p2named"></div>
+			<div id="p2namegr"></div>
+		</div>
+	</div>
+	<div id="stageg">
+		<div id="staged"></div>
+	</div>
 </body>
+<script>
+	const p1name = nodecg.Replicant('p1name')
+	const p2name = nodecg.Replicant('p2name')
+	const p1score = nodecg.Replicant('p1score');
+	const p2score = nodecg.Replicant('p2score');
+	const stage = nodecg.Replicant('stage')
+	
+	p1name.on('change', (newValue, oldValue) => {
+		p1named.innerText = newValue;
+	});
+	
+	p2name.on('change', (newValue, oldValue) => {
+		p2named.innerText = newValue;
+	});
+	
+	stage.on('change', (newValue, oldValue) => {
+		staged.innerText = newValue;
+	});
+	
+	p1score.on('change', (newValue, oldValue) => {
+		p1scored.innerText = newValue;
+	});
+	
+	p2score.on('change', (newValue, oldValue) => {
+		p2scored.innerText = newValue;
+	});
+</script>
 </html>

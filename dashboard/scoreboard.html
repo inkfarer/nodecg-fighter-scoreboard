@@ -34,6 +34,13 @@
 				max-width: 50px;
 				max-height: 30px;
 			}
+			.nameInput {
+				margin-top: -10px;
+				margin-left: 5px;
+				margin-right: 5px;
+				--primary-text-color: #FFFFFF;
+				--paper-input-container-focus-color: #00BEBE;
+			}
 		</style>
 	</custom-style>
 </head>
@@ -51,6 +58,11 @@
 			<paper-button class="scoreMinus" id="p2min" raised style="background-color: #C9513E;">-</paper-button>
 		</div>
 	</div>
+	<div class="layout horizontal">
+		<paper-input label="P1 name" class="nameInput" id="p1input"></paper-input>
+		<paper-input label="P2 name" class="nameInput" id="p2input"></paper-input>
+	</div>
+	<paper-input label="Tourney stage" class="nameInput" id="stageInput"></paper-input>
 </body>
 <script>
 	const p1score = nodecg.Replicant('p1score');
@@ -61,7 +73,13 @@
 	const p1min = document.getElementById("p1min");
 	const p2plus = document.getElementById("p2plus");
 	const p2min = document.getElementById("p2min");
-
+	const p1name = nodecg.Replicant('p1name');
+	const p2name = nodecg.Replicant('p2name');
+	const p1input = document.getElementById("p1input");
+	const p2input = document.getElementById("p2input");
+	const stageInput = document.getElementById("stageInput");
+	const stage = nodecg.Replicant('stage');
+	
 	p1score.on('change', (newValue, oldValue) => {
 		p1display.value = newValue;
 	});
@@ -72,12 +90,10 @@
 
 	p1display.addEventListener('change', (event) => {
 		p1score.value = Number(event.target.value);
-		console.log(p1score);
 	});
 
 	p2display.addEventListener('change', (event) => {
 		p2score.value = Number(event.target.value);
-		console.log(p1score);
 	});
 
 	p1plus.onclick = () => {
@@ -95,5 +111,29 @@
 	p2min.onclick = () => {
 		p2score.value = Number(p2score.value) - 1;
 	};
+	
+	p1input.addEventListener('change', (event) => {
+		p1name.value = event.target.value;
+	});
+	
+	p2input.addEventListener('change', (event) => {
+		p2name.value = event.target.value;
+	});
+	
+	stageInput.addEventListener('change', (event) => {
+		stage.value = event.target.value;
+	});
+	
+	p1name.on('change', (newValue, oldValue) => {
+		p1input.value = newValue;
+	});
+	
+	p2name.on('change', (newValue, oldValue) => {
+		p2input.value = newValue;
+	});
+	
+	stage.on('change', (newValue, oldValue) => {
+		stageInput.value = newValue;
+	});
 </script>
 </html>
