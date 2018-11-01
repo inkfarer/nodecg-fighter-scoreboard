@@ -41,6 +41,12 @@
 				--primary-text-color: #FFFFFF;
 				--paper-input-container-focus-color: #00BEBE;
 			}
+			#nextm {
+				text-align: center;
+				color: white;
+				font-weight: bold;
+				font-size: 1.5em;
+			}
 		</style>
 	</custom-style>
 </head>
@@ -63,6 +69,13 @@
 		<paper-input label="P2 name" class="nameInput" id="p2input"></paper-input>
 	</div>
 	<paper-input label="Tourney stage" class="nameInput" id="stageInput"></paper-input>
+	<div id="nextm">Next Match</div>
+	<div class="layout horizontal">
+		<paper-input label="Next P1 name" class="nameInput" id="np1input"></paper-input>
+		<paper-input label="Next P2 name" class="nameInput" id="np2input"></paper-input>
+	</div>
+	<paper-button id="nmBegin" raised style="background-color: #00BEBE; min-width: 238px">Begin Next Match</paper-button>
+	<paper-button id="nmDisplay" raised style="background-color: #75459A; min-width: 238px">Display Next Match</paper-button>
 </body>
 <script>
 	const p1score = nodecg.Replicant('p1score');
@@ -79,6 +92,10 @@
 	const p2input = document.getElementById("p2input");
 	const stageInput = document.getElementById("stageInput");
 	const stage = nodecg.Replicant('stage');
+	const nmBegin = document.getElementById('nmBegin');
+	const np1name = nodecg.Replicant('np1name');
+	const np2name = nodecg.Replicant('np2name');
+	const nmDisplay = document.getElementById("nmDisplay");
 	
 	p1score.on('change', (newValue, oldValue) => {
 		p1display.value = newValue;
@@ -111,23 +128,23 @@
 	p2min.onclick = () => {
 		p2score.value = Number(p2score.value) - 1;
 	};
-	
+
 	p1input.addEventListener('change', (event) => {
 		p1name.value = event.target.value;
 	});
-	
+
 	p2input.addEventListener('change', (event) => {
 		p2name.value = event.target.value;
 	});
-	
+
 	stageInput.addEventListener('change', (event) => {
 		stage.value = event.target.value;
 	});
-	
+
 	p1name.on('change', (newValue, oldValue) => {
 		p1input.value = newValue;
 	});
-	
+
 	p2name.on('change', (newValue, oldValue) => {
 		p2input.value = newValue;
 	});
@@ -135,5 +152,34 @@
 	stage.on('change', (newValue, oldValue) => {
 		stageInput.value = newValue;
 	});
+
+	nmBegin.onclick = () => {
+		p1name.value = np1input.value;
+		p2name.value = np2input.value;
+		np1name.value = "";
+		np2name.value = "";
+		p1score.value = 0;
+		p2score.value = 0;
+	};
+
+	np1name.on('change', (newValue, oldValue) => {
+		np1input.value = newValue;
+	});
+
+	np2name.on('change', (newValue, oldValue) => {
+		np2input.value = newValue;
+	});
+
+	np1input.addEventListener('change', (event) => {
+		np1name.value = event.target.value;
+	});
+
+	np2input.addEventListener('change', (event) => {
+		np2name.value = event.target.value;
+	});
+
+	nmDisplay.onclick = () => {
+		nodecg.sendMessage('displayNM');
+	};
 </script>
 </html>
