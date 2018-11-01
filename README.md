@@ -4,8 +4,8 @@ A [NodeCG](http://github.com/nodecg/nodecg) bundle, made primarily with the figh
 
 ## Screenshots
 
-* [Dashboard](https://i.imgur.com/0XcA7x5.png)
-* [Graphics](https://i.imgur.com/fTgTto7.png)
+* [Dashboard](https://i.imgur.com/GEMjWpq.png)
+* [Graphics](https://i.imgur.com/WJQwiyC.png)
 
 ## Install
 
