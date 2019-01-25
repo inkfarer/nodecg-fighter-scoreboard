@@ -8,20 +8,20 @@
     <meta charset="UTF-8">
 	<style>
 		#p1scored {
-			color: #000000;
-			position: absolute;
-			left: 11px;
-			font-size: 3em;
-			font-family: 'Lato', sans-serif;
+			left: 8px;
 			top: -2px;
 		}
 		#p2scored {
+			top: -2px;
+			right: 8px;
+		}
+		.scored {
 			color: #000000;
 			position: absolute;
 			font-size: 3em;
 			font-family: 'Lato', sans-serif;
-			top: -2px;
-			right: 11px;
+			text-align: center;
+			width: 50px;
 		}
 		#staged {
 			color: #FFFFFF;
@@ -33,24 +33,26 @@
 			left: 5px;
 		}
 		#p1named {
-			color: #FFFFFF;
 			right: 5px;
-			font-size: 3em;
-			position: absolute;
-			font-family: 'Lato', sans-serif;
+			position: inherit;
+			left: 295px;
+			bottom: -53px;
 		}
 		#p2named {
-			color: #FFFFFF;
 			position: absolute;
-			font-size: 3em;
-			font-family: 'Lato', sans-serif;
 		}
-		#p1graphic {
+		.named {
+			color: #FFFFFF;
+			font-family: 'Lato', sans-serif;
+			font-size: 3em;
+		}
+		.nameg {
 			position: absolute;
 			background-color: #2D2D2D;
 			width: 300px;
 			height: 50px;
 			top: -1px;
+			opacity: 0.75;
 		}
 		#p1graphics {
 			top: 20px;
@@ -58,10 +60,6 @@
 			position: absolute;
 		}
 		#p1scoreg {
-			position: absolute;
-			background-color: #FFFFFF;
-			height: 50px;
-			width: 50px;
 			left: 305px;
 		}
 		#p2graphics {
@@ -75,20 +73,18 @@
 			font-size: 3em;
 			position: absolute;
 			font-family: 'Lato', sans-serif;
+			opacity: 1;
+			bottom: -53px;
 		}
 		#p2scoreg {
+			right: 5px;
+		}
+		.scoreg {
 			position: absolute;
 			background-color: #FFFFFF;
 			height: 50px;
-			width: 50px;
-			right: 5px;
-		}
-		#p2nameg {
-			position: absolute;
-			background-color: #2D2D2D;
-			width: 300px;
-			height: 50px;
-			top: -1px;
+			width: 70px;
+			box-shadow: 0px 0px 80px #FFFFFF;
 		}
 		#stageg {
 			position: absolute;
@@ -97,22 +93,6 @@
 			background-color: #0075D0;
 			width: 250px;
 			height: 40px;
-		}
-		#p1namegr {
-			background-image: linear-gradient(to right, rgba(255, 255, 255, 0), #2D2D2D);
-			width: 200px;
-			height: 50px;
-			position: absolute;
-			right: 300px;
-			
-		}
-		#p2namegr {
-			background-image: linear-gradient(to left, rgba(255, 255, 255, 0), #2D2D2D);
-			width: 200px;
-			height: 50px;
-			position: absolute;
-			left: 300px;
-			
 		}
 		#nextupd {
 			font-family: 'Lato', sans-serif;
@@ -127,49 +107,83 @@
 			border-left: 5px solid #0075D0;
 			border-right: 5px solid #0075D0;
 		}
+		#scoreboard {
+			width: 1920px;
+			height: 1080px;
+			position: absolute;
+		}
+		#p1line {
+			background-color: #008AFF;
+			right: -375px;
+			width: 375px;
+		}
+		#p2line {
+			background-color: #FF4200;
+			left: -75px;
+			width: 375px;
+		}
+		.line {
+			position: absolute;
+			height: 5px;
+			top: 55px;
+		}
+		.flag {
+			position: absolute;
+			top: -1px;
+		}
+		#p2flag {
+			left: 300px;
+		}
+		#p1flag {
+			right: 0px;
+		}
 	</style>
 </head>
 <body>
-	<div id="p1graphics">
-		<div id="p1scoreg">
-			<div id="p1scored"></div>
+	<div id="scoreboard">
+		<div id="p1graphics">
+			<div id="p1scoreg" class="scoreg">
+				<sc-fitted-text class="scored" id="p1scored" align="center" max-width="60"></sc-fitted-text>
+			</div>
+			<div id="p1nameg" class="nameg"></div>
+			<sc-fitted-text max-width="290" id="p1named" class="named" align="right"></sc-fitted-text>
+			<div id="p1line" class="line"></div>
+			<img id="p1flag" height="50" class="flag"></img>
 		</div>
-		<div id="p1graphic">
-			<div id="p1named"></div>
-			<div id="p1namegr"></div>
+		<div id="p2graphics">
+			<div id="p2scoreg" class="scoreg">
+				<sc-fitted-text id="p2scored" class="scored" align="center" max-width="60"></sc-fitted-text>
+			</div>
+			<div id="p2nameg" class="nameg"></div>
+			<sc-fitted-text max-width="290" id="p2named" class="named" align="left"></sc-fitted-text>
+			<div id="p2line" class="line"></div>
+			<img id="p2flag" height="50" class="flag"></img>
 		</div>
-	</div>
-	<div id="p2graphics">
-		<div id="p2scoreg">
-			<div id="p2scored"></div>
+		<div id="stageg">
+			<sc-fitted-text max-width="240" id="staged" align="center"></sc-fitted-text>
 		</div>
-		<div id="p2nameg">
-			<div id="p2named"></div>
-			<div id="p2namegr"></div>
-		</div>
-	</div>
-	<div id="stageg">
-		<sc-fitted-text max-width="240" id="staged" align="center"></sc-fitted-text>
 	</div>
 	<div id="nextupg">
 		<div id="nextupd">asdasd</div>
 	</div>
 </body>
 <script>
-	const p1name = nodecg.Replicant('p1name')
-	const p2name = nodecg.Replicant('p2name')
+	const p1info = nodecg.Replicant('p1info')
+	const p2info = nodecg.Replicant('p2info')
 	const p1score = nodecg.Replicant('p1score');
 	const p2score = nodecg.Replicant('p2score');
 	const stage = nodecg.Replicant('stage');
 	const np1name = nodecg.Replicant('np1name');
 	const np2name = nodecg.Replicant('np2name');
 	
-	p1name.on('change', (newValue, oldValue) => {
-		p1named.innerText = newValue;
+	p1info.on('change', (newValue, oldValue) => {
+		p1named.text = newValue[0];
+		p1flag.src = "flags/" + newValue[1] + ".svg";
 	});
 
-	p2name.on('change', (newValue, oldValue) => {
-		p2named.innerText = newValue;
+	p2info.on('change', (newValue, oldValue) => {
+		p2named.text = newValue[0];
+		p2flag.src = "flags/" + newValue[1] + ".svg";
 	});
 
 	stage.on('change', (newValue, oldValue) => {
@@ -177,11 +191,11 @@
 	});
 
 	p1score.on('change', (newValue, oldValue) => {
-		p1scored.innerText = newValue;
+		p1scored.text = newValue;
 	});
 
 	p2score.on('change', (newValue, oldValue) => {
-		p2scored.innerText = newValue;
+		p2scored.text = newValue;
 	});
 
 	nodecg.listenFor('displayNM', message => {

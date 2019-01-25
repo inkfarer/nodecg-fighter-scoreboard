@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
 	<link rel="import" href="../bower_components/font-roboto/roboto.html">
 	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 	<link rel="import" href="../bower_components/paper-button/paper-button.html">
 	<link rel="import" href="../bower_components/paper-input/paper-input.html">
+	<link rel="import" href="../bower_components/nodecg-typeahead-input/nodecg-typeahead-input.html">
 	<custom-style>
 		<style include="iron-flex iron-flex-alignment" is="custom-style">
 			paper-button {
@@ -16,7 +17,9 @@
 				font-size: 14px;
 				-webkit-font-smoothing: antialiased;
 			}
+
 			.counter {
+				max-width: 55px;
 				font-size: 1em;
 				margin-left: 5px;
 				margin-right: 5px;
@@ -29,11 +32,14 @@
 					text-align: center;
 				}
 			}
+
 			.scoreMinus, .scorePlus {
 				min-width: 50px;
 				max-width: 50px;
 				max-height: 30px;
+
 			}
+
 			.nameInput {
 				margin-top: -10px;
 				margin-left: 5px;
@@ -41,23 +47,47 @@
 				--primary-text-color: #FFFFFF;
 				--paper-input-container-focus-color: #00BEBE;
 			}
+
 			#nextm {
 				text-align: center;
 				color: white;
 				font-weight: bold;
 				font-size: 1.5em;
 			}
+
+			#warn {
+				text-align: center;
+				font-size: 0.8em;
+				font-weight: bold;
+				color: white;
+			}
+
+			.countryselect {
+				color: white;
+			}
+
+			.input {
+				--primary-text-color: #FFFFFF;
+				--paper-input-container-focus-color: #00BEBE;
+				margin-top: -10px;
+				margin-left: 5px;
+				margin-right: 5px;
+			}
+
+			#p1plus, #p1min {
+				margin-left: 71px;
+			}
 		</style>
 	</custom-style>
 </head>
 <body style="background-color: #2F3A4F">
-	<div class= "layout horizontal">
+	<div class="layout horizontal">
 		<div class="layout vertical">
 			<paper-button class="scorePlus" id="p1plus" raised style="background-color: #5BA664;">+</paper-button>
 			<paper-button class="scoreMinus" id="p1min" raised style="background-color: #C9513E;">-</paper-button>
 		</div>
 		<paper-input class="counter" value="0" id="p1display" type="number"></paper-input>
-		<div style= "color: #FFFFFF; font-size: 2.5em;"> : </div>
+		<div style="color: #FFFFFF; font-size: 2.5em;"> : </div>
 		<paper-input class="counter" value="0" id="p2display" type="number"></paper-input>
 		<div class="layout vertical">
 			<paper-button class="scorePlus" id="p2plus" raised style="background-color: #5BA664;">+</paper-button>
@@ -68,14 +98,29 @@
 		<paper-input label="P1 name" class="nameInput" id="p1input"></paper-input>
 		<paper-input label="P2 name" class="nameInput" id="p2input"></paper-input>
 	</div>
+	<div class="layout horizontal">
+		<nodecg-typeahead-input label="P1 Country" replicant-name="countries" id="p1country" class="input"></nodecg-typeahead-input>
+		<nodecg-typeahead-input label="P2 Country" replicant-name="countries" id="p2country" class="input"></nodecg-typeahead-input>
+	</div>
+	<div class="layout horizontal">
+		<paper-button id="p1update" raised style="background-color: #008AFF; min-width: 189px;">Update P1 info</paper-button>
+		<paper-button id="p2update" raised style="background-color: #FF4200; min-width: 189px;">Update P2 info</paper-button>
+	</div>
 	<paper-input label="Tourney stage" class="nameInput" id="stageInput"></paper-input>
 	<div id="nextm">Next Match</div>
 	<div class="layout horizontal">
 		<paper-input label="Next P1 name" class="nameInput" id="np1input"></paper-input>
 		<paper-input label="Next P2 name" class="nameInput" id="np2input"></paper-input>
 	</div>
-	<paper-button id="nmBegin" raised style="background-color: #00BEBE; min-width: 238px">Begin Next Match</paper-button>
-	<paper-button id="nmDisplay" raised style="background-color: #75459A; min-width: 238px">Display Next Match</paper-button>
+	<div class="layout horizontal">
+		<nodecg-typeahead-input id="np1country" label="Next P1 Country" replicant-name="countries" class="input"></nodecg-typeahead-input>
+		<nodecg-typeahead-input id="np2country" label="Next P2 Country" replicant-name="countries" class="input"></nodecg-typeahead-input>
+	</div>
+	<div id="warn">Fill every field before beginning or displaying the next match!</div>
+	<div class="layout horizontal">
+		<paper-button id="nmBegin" raised style="background-color: #00BEBE; min-width: 189px;">Begin Next Match</paper-button>
+		<paper-button id="nmDisplay" raised style="background-color: #75459A; min-width: 189px;">Display Next Match</paper-button>
+	</div>
 </body>
 <script>
 	const p1score = nodecg.Replicant('p1score');
@@ -86,16 +131,281 @@
 	const p1min = document.getElementById("p1min");
 	const p2plus = document.getElementById("p2plus");
 	const p2min = document.getElementById("p2min");
-	const p1name = nodecg.Replicant('p1name');
-	const p2name = nodecg.Replicant('p2name');
+	const p1info = nodecg.Replicant('p1info');
+	const p2info = nodecg.Replicant('p2info');
 	const p1input = document.getElementById("p1input");
 	const p2input = document.getElementById("p2input");
 	const stageInput = document.getElementById("stageInput");
 	const stage = nodecg.Replicant('stage');
 	const nmBegin = document.getElementById('nmBegin');
+	const np1info = nodecg.Replicant('np1info');
+	const np2info = nodecg.Replicant('np2info');
+	const nmDisplay = document.getElementById("nmDisplay");
+	const countries = nodecg.Replicant('countries');
 	const np1name = nodecg.Replicant('np1name');
 	const np2name = nodecg.Replicant('np2name');
-	const nmDisplay = document.getElementById("nmDisplay");
+	var p1infoar = [];
+	var p2infoar = [];
+	var np1infoar = [];
+	var np2infoar = [];
+
+	countries.value = ["Lithuania",
+		"Latvia",
+		"Estonia",
+		"United States",
+		"Canada",
+		"Andorra",
+		"United Arab Emirates",
+		"Afghanistan",
+		"Antigua and Barbuda",
+		"Anguilla",
+		"Albania",
+		"Armenia",
+		"Netherlands Antilles",
+		"Angola",
+		"Antarctica",
+		"Argentina",
+		"American Samoa",
+		"Austria",
+		"Australia",
+		"Aruba",
+		"\u00c5land Islands",
+		"Azerbaijan",
+		"Bosnia and Herzegovina",
+		"Barbados",
+		"Bangladesh",
+		"Belgium",
+		"Burkina Faso",
+		"Bulgaria",
+		"Bahrain",
+		"Burundi",
+		"Benin",
+		"Saint Barthélemy",
+		"Bermuda",
+		"Brunei Darussalam",
+		"Bolivia, Plurinational State of",
+		"Caribbean Netherlands",
+		"Brazil",
+		"Bahamas",
+		"Bhutan",
+		"Bouvet Island",
+		"Botswana",
+		"Belarus",
+		"Belize",
+		"Cocos (Keeling) Islands",
+		"Congo, the Democratic Republic of the",
+		"Central African Republic",
+		"Congo",
+		"Switzerland",
+		"C\u00f4te d'Ivoire",
+		"Cook Islands",
+		"Chile",
+		"Cameroon",
+		"China",
+		"Colombia",
+		"Costa Rica",
+		"Cuba",
+		"Cape Verde",
+		"Cura\u00e7ao",
+		"Christmas Island",
+		"Cyprus",
+		"Czech Republic",
+		"Germany",
+		"Djibouti",
+		"Denmark",
+		"Dominica",
+		"Dominican Republic",
+		"Algeria",
+		"Ecuador",
+		"Egypt",
+		"Western Sahara",
+		"Eritrea",
+		"Spain",
+		"Ethiopia",
+		"Europe",
+		"Finland",
+		"Fiji",
+		"Falkland Islands (Malvinas)",
+		"Micronesia, Federated States of",
+		"Faroe Islands",
+		"France",
+		"Gabon",
+		"England",
+		"Northern Ireland",
+		"Scotland",
+		"Wales",
+		"United Kingdom",
+		"Grenada",
+		"Georgia",
+		"French Guiana",
+		"Guernsey",
+		"Ghana",
+		"Gibraltar",
+		"Greenland",
+		"Gambia",
+		"Guinea",
+		"Guadeloupe",
+		"Equatorial Guinea",
+		"Greece",
+		"South Georgia and the South Sandwich Islands",
+		"Guatemala",
+		"Guam",
+		"Guinea-Bissau",
+		"Guyana",
+		"Hong Kong",
+		"Heard Island and McDonald Islands",
+		"Honduras",
+		"Croatia",
+		"Haiti",
+		"Hungary",
+		"Indonesia",
+		"Ireland",
+		"Israel",
+		"Isle of Man",
+		"India",
+		"British Indian Ocean Territory",
+		"Iraq",
+		"Iran, Islamic Republic of",
+		"Iceland",
+		"Italy",
+		"Jersey",
+		"Jamaica",
+		"Jordan",
+		"Japan",
+		"Kenya",
+		"Kyrgyzstan",
+		"Cambodia",
+		"Kiribati",
+		"Comoros",
+		"Saint Kitts and Nevis",
+		"Korea, Democratic People's Republic of",
+		"Korea, Republic of",
+		"Kuwait",
+		"Cayman Islands",
+		"Kazakhstan",
+		"Lao People's Democratic Republic",
+		"Lebanon",
+		"Saint Lucia",
+		"Liechtenstein",
+		"Sri Lanka",
+		"Liberia",
+		"Lesotho",
+		"Luxembourg",
+		"Libya",
+		"Morocco",
+		"Monaco",
+		"Moldova, Republic of",
+		"Montenegro",
+		"Saint Martin",
+		"Madagascar",
+		"Marshall Islands",
+		"Macedonia, the former Yugoslav Republic of",
+		"Mali",
+		"Myamar",
+		"Mongolia",
+		"Macao",
+		"Northern Mariana Islands",
+		"Martinique",
+		"Mauritania",
+		"Montserrat",
+		"Malta",
+		"Mauritius",
+		"Maldives",
+		"Malawi",
+		"Mexico",
+		"Malaysia",
+		"Mozambique",
+		"Namibia",
+		"New Caledonia",
+		"Niger",
+		"Norfolk Island",
+		"Nigeria",
+		"Nicaragua",
+		"Netherlands",
+		"Norway",
+		"Nepal",
+		"Nauru",
+		"Niue",
+		"New Zealand",
+		"Oman",
+		"Panama",
+		"Peru",
+		"French Polynesia",
+		"Papua New Guinea",
+		"Philippines",
+		"Pakistan",
+		"Poland",
+		"Saint Pierre and Miquelon",
+		"Pitcairn",
+		"Puerto Rico",
+		"Palestine",
+		"Portugal",
+		"Palau",
+		"Paraguay",
+		"Qatar",
+		"Réunion",
+		"Romania",
+		"Serbia",
+		"Russian Federation",
+		"Rwanda",
+		"Saudi Arabia",
+		"Solomon Islands",
+		"Seychelles",
+		"Sudan",
+		"Sweden",
+		"Singapore",
+		"Saint Helena, Ascension and Tristan da Cunha",
+		"Slovenia",
+		"Svalbard and Jan Mayen Islands",
+		"Slovakia",
+		"Sierra Leone",
+		"San Marino",
+		"Senegal",
+		"Somalia",
+		"Suriname",
+		"South Sudan",
+		"Sao Tome and Principe",
+		"El Salvador",
+		"Sint Maarten (Dutch part)",
+		"Syrian Arab Republic",
+		"Swaziland",
+		"Turks and Caicos Islands",
+		"Chad",
+		"French Southern Territories",
+		"Togo",
+		"Thailand",
+		"Tajikistan",
+		"Tokelau",
+		"Timor-Leste",
+		"Turkmenistan",
+		"Tunisia",
+		"Tonga",
+		"Turkey",
+		"Trinidad and Tobago",
+		"Tuvalu",
+		"Taiwan",
+		"Tanzania, United Republic of",
+		"Ukraine",
+		"Uganda",
+		"US Minor Outlying Islands",
+		"Uruguay",
+		"Uzbekistan",
+		"Holy See (Vatican City State)",
+		"Saint Vincent and the Grenadines",
+		"Venezuela, Bolivarian Republic of",
+		"Virgin Islands, British",
+		"Virgin Islands, U.S.",
+		"Viet Nam",
+		"Vanuatu",
+		"Wallis and Futuna Islands",
+		"Kosovo",
+		"Samoa",
+		"Yemen",
+		"Mayotte",
+		"South Africa",
+		"Zambia",
+		"Zimbabwe"
+	];
 	
 	p1score.on('change', (newValue, oldValue) => {
 		p1display.value = newValue;
@@ -129,10 +439,6 @@
 		p2score.value = Number(p2score.value) - 1;
 	};
 
-	p1input.addEventListener('change', (event) => {
-		p1name.value = event.target.value;
-	});
-
 	p2input.addEventListener('change', (event) => {
 		p2name.value = event.target.value;
 	});
@@ -141,44 +447,44 @@
 		stage.value = event.target.value;
 	});
 
-	p1name.on('change', (newValue, oldValue) => {
-		p1input.value = newValue;
+	p1info.on('change', (newValue, oldValue) => {
+		p1input.value = newValue[0];
+		p1country.value = newValue[1];
 	});
 
-	p2name.on('change', (newValue, oldValue) => {
-		p2input.value = newValue;
+	p2info.on('change', (newValue, oldValue) => {
+		p2input.value = newValue[0];
+		p2country.value = newValue[1];
 	});
+
+	p1update.onclick = () => {
+		p1infoar[0] = p1input.value;
+		p1infoar[1] = p1country.value;
+		p1info.value = p1infoar;
+	}
+
+	p2update.onclick = () => {
+		p2infoar[0] = p2input.value;
+		p2infoar[1] = p2country.value;
+		p2info.value = p2infoar;
+	}
 	
 	stage.on('change', (newValue, oldValue) => {
 		stageInput.value = newValue;
 	});
 
 	nmBegin.onclick = () => {
-		p1name.value = np1input.value;
-		p2name.value = np2input.value;
-		np1name.value = "";
-		np2name.value = "";
-		p1score.value = 0;
-		p2score.value = 0;
+		p1infoar = [np1input.value, np1country.value];
+		p2infoar = [np2input.value, np2country.value];
+		p1info.value = p1infoar;
+		p2info.value = p2infoar;
+		np1input.value = "";
+		mp2input.value = "";
 	};
 
-	np1name.on('change', (newValue, oldValue) => {
-		np1input.value = newValue;
-	});
-
-	np2name.on('change', (newValue, oldValue) => {
-		np2input.value = newValue;
-	});
-
-	np1input.addEventListener('change', (event) => {
-		np1name.value = event.target.value;
-	});
-
-	np2input.addEventListener('change', (event) => {
-		np2name.value = event.target.value;
-	});
-
 	nmDisplay.onclick = () => {
+		np1name.value = np1input.value
+		np2name.value = np2input.value
 		nodecg.sendMessage('displayNM');
 	};
 </script>
