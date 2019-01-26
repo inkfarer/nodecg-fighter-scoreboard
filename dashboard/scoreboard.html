@@ -55,13 +55,6 @@
 				font-size: 1.5em;
 			}
 
-			#warn {
-				text-align: center;
-				font-size: 0.8em;
-				font-weight: bold;
-				color: white;
-			}
-
 			.countryselect {
 				color: white;
 			}
@@ -76,6 +69,11 @@
 
 			#p1plus, #p1min {
 				margin-left: 71px;
+			}
+
+			paper-button[disabled] {
+				color: white;
+				background-color: #a4a4a4 !important;
 			}
 		</style>
 	</custom-style>
@@ -109,14 +107,13 @@
 	<paper-input label="Tourney stage" class="nameInput" id="stageInput"></paper-input>
 	<div id="nextm">Next Match</div>
 	<div class="layout horizontal">
-		<paper-input label="Next P1 name" class="nameInput" id="np1input"></paper-input>
-		<paper-input label="Next P2 name" class="nameInput" id="np2input"></paper-input>
+		<paper-input label="Next P1 name" class="nameInput" id="np1input" onkeyup="disableButton()"></paper-input>
+		<paper-input label="Next P2 name" class="nameInput" id="np2input" onkeyup="disableButton()"></paper-input>
 	</div>
 	<div class="layout horizontal">
-		<nodecg-typeahead-input id="np1country" label="Next P1 Country" replicant-name="countries" class="input"></nodecg-typeahead-input>
-		<nodecg-typeahead-input id="np2country" label="Next P2 Country" replicant-name="countries" class="input"></nodecg-typeahead-input>
+		<nodecg-typeahead-input id="np1country" label="Next P1 Country" replicant-name="countries" class="input" onchange="disableButton()"></nodecg-typeahead-input>
+		<nodecg-typeahead-input id="np2country" label="Next P2 Country" replicant-name="countries" class="input" onchange="disableButton()"></nodecg-typeahead-input>
 	</div>
-	<div id="warn">Fill every field before beginning or displaying the next match!</div>
 	<div class="layout horizontal">
 		<paper-button id="nmBegin" raised style="background-color: #00BEBE; min-width: 189px;">Begin Next Match</paper-button>
 		<paper-button id="nmDisplay" raised style="background-color: #75459A; min-width: 189px;">Display Next Match</paper-button>
@@ -488,6 +485,21 @@
 		np1name.value = np1input.value
 		np2name.value = np2input.value
 		nodecg.sendMessage('displayNM');
+	};
+
+	nmBegin.disabled = true;
+	nmDisplay.disabled = true;
+	function disableButton() {
+		if (np1input.value != "" && np2input.value != "" && np1country.value != "" && np2country.value != "") {
+			nmBegin.disabled = false;
+		} else {
+			nmBegin.disabled = true;
+		}
+		if (np1input.value != "" && np2input.value != "") {
+			nmDisplay.disabled = false;
+		} else {
+			nmDisplay.disabled = true;
+		}
 	};
 </script>
 </html>
