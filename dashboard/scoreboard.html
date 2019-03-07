@@ -101,8 +101,9 @@
 		<nodecg-typeahead-input label="P2 Country" replicant-name="countries" id="p2country" class="input"></nodecg-typeahead-input>
 	</div>
 	<div class="layout horizontal">
-		<paper-button id="p1update" raised style="background-color: #008AFF; min-width: 189px;">Update P1 info</paper-button>
-		<paper-button id="p2update" raised style="background-color: #FF4200; min-width: 189px;">Update P2 info</paper-button>
+		<paper-button id="p1update" raised style="background-color: #008AFF; min-width: 125px;">Update P1 info</paper-button>
+		<paper-button id="bothUpdate" raised style="background-color: #00BEBE; min-width: 125px;">Update both</paper-button>
+		<paper-button id="p2update" raised style="background-color: #FF4200; min-width: 125px;">Update P2 info</paper-button>
 	</div>
 	<paper-input label="Tourney stage" class="nameInput" id="stageInput"></paper-input>
 	<div id="nextm">Next Match</div>
@@ -122,29 +123,15 @@
 <script>
 	const p1score = nodecg.Replicant('p1score');
 	const p2score = nodecg.Replicant('p2score');
-	const p1display = document.getElementById("p1display");
-	const p2display = document.getElementById("p2display");
-	const p1plus = document.getElementById("p1plus");
-	const p1min = document.getElementById("p1min");
-	const p2plus = document.getElementById("p2plus");
-	const p2min = document.getElementById("p2min");
-	const p1info = nodecg.Replicant('p1info');
-	const p2info = nodecg.Replicant('p2info');
-	const p1input = document.getElementById("p1input");
-	const p2input = document.getElementById("p2input");
-	const stageInput = document.getElementById("stageInput");
+	const p1info = nodecg.Replicant('p1info', { defaultValue: new Array() });
+	const p2info = nodecg.Replicant('p2info', { defaultValue: new Array() });
 	const stage = nodecg.Replicant('stage');
 	const nmBegin = document.getElementById('nmBegin');
-	const np1info = nodecg.Replicant('np1info');
-	const np2info = nodecg.Replicant('np2info');
-	const nmDisplay = document.getElementById("nmDisplay");
+	const np1info = nodecg.Replicant('np1info', { defaultValue: new Array() });
+	const np2info = nodecg.Replicant('np2info', { defaultValue: new Array() });
 	const countries = nodecg.Replicant('countries');
 	const np1name = nodecg.Replicant('np1name');
 	const np2name = nodecg.Replicant('np2name');
-	var p1infoar = [];
-	var p2infoar = [];
-	var np1infoar = [];
-	var np2infoar = [];
 
 	countries.value = ["Lithuania",
 		"Latvia",
@@ -455,15 +442,16 @@
 	});
 
 	p1update.onclick = () => {
-		p1infoar[0] = p1input.value;
-		p1infoar[1] = p1country.value;
-		p1info.value = p1infoar;
+		p1info.value = [p1input.value, p1country.value];
 	}
 
 	p2update.onclick = () => {
-		p2infoar[0] = p2input.value;
-		p2infoar[1] = p2country.value;
-		p2info.value = p2infoar;
+		p2info.value = [p2input.value, p2country.value];
+	}
+
+	bothUpdate.onclick = () => {
+		p1info.value = [p1input.value, p1country.value];
+		p2info.value = [p2input.value, p2country.value];
 	}
 	
 	stage.on('change', (newValue, oldValue) => {
@@ -471,14 +459,13 @@
 	});
 
 	nmBegin.onclick = () => {
-		p1infoar = [np1input.value, np1country.value];
-		p2infoar = [np2input.value, np2country.value];
-		p1info.value = p1infoar;
-		p2info.value = p2infoar;
+		p1info.value = [np1input.value, np1country.value];
+		p2info.value = [np2input.value, np2country.value];
 		np1input.value = "";
 		np2input.value = "";
 		np1country.value = "";
 		np2country.value = "";
+		disableButton();
 	};
 
 	nmDisplay.onclick = () => {
